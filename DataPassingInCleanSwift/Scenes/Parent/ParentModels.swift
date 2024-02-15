@@ -14,18 +14,20 @@ import UIKit
 
 enum Parent
 {
-  // MARK: Use cases
-  
-  enum Something
-  {
-    struct Request
+    // MARK: Set Entered Text
+    enum SetEnteredText
     {
+        struct Request
+        {
+            var enteredText: String
+        }
+        struct Response
+        {
+            
+        }
+        struct ViewModel
+        {
+            
+        }
     }
-    struct Response
-    {
-    }
-    struct ViewModel
-    {
-    }
-  }
 }

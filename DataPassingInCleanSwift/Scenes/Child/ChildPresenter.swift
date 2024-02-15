@@ -14,18 +14,18 @@ import UIKit
 
 protocol ChildPresentationLogic
 {
-  func presentSomething(response: Child.Something.Response)
+    func presentEnteredText(response: Child.GetEnteredText.Response)
 }
 
 class ChildPresenter: ChildPresentationLogic
 {
-  weak var viewController: ChildDisplayLogic?
-  
-  // MARK: Do something
-  
-  func presentSomething(response: Child.Something.Response)
-  {
-    let viewModel = Child.Something.ViewModel()
-    viewController?.displaySomething(viewModel: viewModel)
-  }
+    weak var viewController: ChildDisplayLogic?
+    
+    // MARK: Do something
+    
+    func presentEnteredText(response: Child.GetEnteredText.Response)
+    {
+        let viewModel = Child.GetEnteredText.ViewModel(enteredText: response.enteredText)
+        viewController?.displayEnteredText(viewModel: viewModel)
+    }
 }

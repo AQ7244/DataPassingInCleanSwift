@@ -14,7 +14,7 @@ import UIKit
 
 class ChildWorker
 {
-  func doSomeWork()
-  {
-  }
+    func doSomeWork()
+    {
+    }
 }

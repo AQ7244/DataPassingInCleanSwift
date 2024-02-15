@@ -14,47 +14,50 @@ import UIKit
 
 @objc protocol ParentRoutingLogic
 {
-  //func routeToSomewhere(segue: UIStoryboardSegue?)
+    func routeToChild(segue: UIStoryboardSegue?)
 }
 
 protocol ParentDataPassing
 {
-  var dataStore: ParentDataStore? { get }
+    var dataStore: ParentDataStore? { get }
 }
 
 class ParentRouter: NSObject, ParentRoutingLogic, ParentDataPassing
 {
-  weak var viewController: ParentViewController?
-  var dataStore: ParentDataStore?
-  
-  // MARK: Routing
-  
-  //func routeToSomewhere(segue: UIStoryboardSegue?)
-  //{
-  //  if let segue = segue {
-  //    let destinationVC = segue.destination as! SomewhereViewController
-  //    var destinationDS = destinationVC.router!.dataStore!
-  //    passDataToSomewhere(source: dataStore!, destination: &destinationDS)
-  //  } else {
-  //    let storyboard = UIStoryboard(name: "Main", bundle: nil)
-  //    let destinationVC = storyboard.instantiateViewController(withIdentifier: "SomewhereViewController") as! SomewhereViewController
-  //    var destinationDS = destinationVC.router!.dataStore!
-  //    passDataToSomewhere(source: dataStore!, destination: &destinationDS)
-  //    navigateToSomewhere(source: viewController!, destination: destinationVC)
-  //  }
-  //}
-
-  // MARK: Navigation
-  
-  //func navigateToSomewhere(source: ParentViewController, destination: SomewhereViewController)
-  //{
-  //  source.show(destination, sender: nil)
-  //}
-  
-  // MARK: Passing data
-  
-  //func passDataToSomewhere(source: ParentDataStore, destination: inout SomewhereDataStore)
-  //{
-  //  destination.name = source.name
-  //}
+    weak var viewController: ParentViewController?
+    var dataStore: ParentDataStore?
+    
+    // MARK: Routing
+    
+    func routeToChild(segue: UIStoryboardSegue?)
+    {
+        if let segue = segue {
+            
+            let destinationVC = segue.destination as! ChildViewController
+            var destinationDS = destinationVC.router!.dataStore!
+            passDataToChild(source: dataStore!, destination: &destinationDS)
+            
+        } else {
+            
+            let storyboard = UIStoryboard(name: "Main", bundle: nil)
+            let destinationVC = storyboard.instantiateViewController(withIdentifier: String(describing: ChildViewController.self)) as! ChildViewController
+            var destinationDS = destinationVC.router!.dataStore!
+            passDataToChild(source: dataStore!, destination: &destinationDS)
+            navigateToChild(source: viewController!, destination: destinationVC)
+        }
+    }
+    
+    // MARK: Navigation
+    
+    func navigateToChild(source: ParentViewController, destination: ChildViewController)
+    {
+        source.show(destination, sender: nil)
+    }
+    
+    // MARK: Passing data
+    
+    func passDataToChild(source: ParentDataStore, destination: inout ChildDataStore)
+    {
+        destination.enteredText = source.enteredText
+    }
 }

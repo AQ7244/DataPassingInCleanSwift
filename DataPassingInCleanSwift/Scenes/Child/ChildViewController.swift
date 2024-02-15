@@ -12,78 +12,87 @@
 
 import UIKit
 
-protocol ChildDisplayLogic: class
+protocol ChildDisplayLogic: AnyObject
 {
-  func displaySomething(viewModel: Child.Something.ViewModel)
+    func displayEnteredText(viewModel: Child.GetEnteredText.ViewModel)
 }
 
 class ChildViewController: UIViewController, ChildDisplayLogic
 {
-  var interactor: ChildBusinessLogic?
-  var router: (NSObjectProtocol & ChildRoutingLogic & ChildDataPassing)?
-
-  // MARK: Object lifecycle
-  
-  override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?)
-  {
-    super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
-    setup()
-  }
-  
-  required init?(coder aDecoder: NSCoder)
-  {
-    super.init(coder: aDecoder)
-    setup()
-  }
-  
-  // MARK: Setup
-  
-  private func setup()
-  {
-    let viewController = self
-    let interactor = ChildInteractor()
-    let presenter = ChildPresenter()
-    let router = ChildRouter()
-    viewController.interactor = interactor
-    viewController.router = router
-    interactor.presenter = presenter
-    presenter.viewController = viewController
-    router.viewController = viewController
-    router.dataStore = interactor
-  }
-  
-  // MARK: Routing
-  
-  override func prepare(for segue: UIStoryboardSegue, sender: Any?)
-  {
-    if let scene = segue.identifier {
-      let selector = NSSelectorFromString("routeTo\(scene)WithSegue:")
-      if let router = router, router.responds(to: selector) {
-        router.perform(selector, with: segue)
-      }
+    var interactor: ChildBusinessLogic?
+    var router: (NSObjectProtocol & ChildRoutingLogic & ChildDataPassing)?
+    
+    @IBOutlet weak var txtView: UITextView!
+    
+    // MARK: Object lifecycle
+    
+    override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?)
+    {
+        super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
+        setup()
     }
-  }
-  
-  // MARK: View lifecycle
-  
-  override func viewDidLoad()
-  {
-    super.viewDidLoad()
-    doSomething()
-  }
-  
-  // MARK: Do something
-  
-  //@IBOutlet weak var nameTextField: UITextField!
-  
-  func doSomething()
-  {
-    let request = Child.Something.Request()
-    interactor?.doSomething(request: request)
-  }
-  
-  func displaySomething(viewModel: Child.Something.ViewModel)
-  {
-    //nameTextField.text = viewModel.name
-  }
+    
+    required init?(coder aDecoder: NSCoder)
+    {
+        super.init(coder: aDecoder)
+        setup()
+    }
+    
+    // MARK: Setup
+    
+    private func setup()
+    {
+        let viewController = self
+        let interactor = ChildInteractor()
+        let presenter = ChildPresenter()
+        let router = ChildRouter()
+        viewController.interactor = interactor
+        viewController.router = router
+        interactor.presenter = presenter
+        presenter.viewController = viewController
+        router.viewController = viewController
+        router.dataStore = interactor
+    }
+    
+    // MARK: Routing
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?)
+    {
+        if let scene = segue.identifier {
+            let selector = NSSelectorFromString("routeTo\(scene)WithSegue:")
+            if let router = router, router.responds(to: selector) {
+                router.perform(selector, with: segue)
+            }
+        }
+    }
+    
+    // MARK: View lifecycle
+    
+    override func viewDidLoad()
+    {
+        super.viewDidLoad()
+        getEnteredText()
+    }
+    
+    // MARK: Do something
+    
+    //@IBOutlet weak var nameTextField: UITextField!
+    
+    func getEnteredText()
+    {
+        let request = Child.GetEnteredText.Request()
+        interactor?.getEnteredText(request: request)
+    }
+    
+    func displayEnteredText(viewModel: Child.GetEnteredText.ViewModel)
+    {
+        if viewModel.enteredText.count > 0 {
+            
+            self.txtView.text = viewModel.enteredText
+            
+        } else {
+            
+            self.txtView.text = "Something went wrong, please go back and try again."
+        }
+    }
 }

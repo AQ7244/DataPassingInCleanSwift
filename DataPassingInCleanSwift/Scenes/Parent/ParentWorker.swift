@@ -14,7 +14,7 @@ import UIKit
 
 class ParentWorker
 {
-  func doSomeWork()
-  {
-  }
+    func doSomeWork()
+    {
+    }
 }

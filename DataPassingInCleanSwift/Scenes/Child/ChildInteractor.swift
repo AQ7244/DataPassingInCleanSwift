@@ -14,28 +14,26 @@ import UIKit
 
 protocol ChildBusinessLogic
 {
-  func doSomething(request: Child.Something.Request)
+    func getEnteredText(request: Child.GetEnteredText.Request)
 }
 
 protocol ChildDataStore
 {
-  //var name: String { get set }
+    var enteredText: String { get set }
 }
 
 class ChildInteractor: ChildBusinessLogic, ChildDataStore
 {
-  var presenter: ChildPresentationLogic?
-  var worker: ChildWorker?
-  //var name: String = ""
-  
-  // MARK: Do something
-  
-  func doSomething(request: Child.Something.Request)
-  {
-    worker = ChildWorker()
-    worker?.doSomeWork()
+    var presenter: ChildPresentationLogic?
+    var worker: ChildWorker?
+    var enteredText: String = ""
     
-    let response = Child.Something.Response()
-    presenter?.presentSomething(response: response)
-  }
+    // MARK: Do something
+    
+    func getEnteredText(request: Child.GetEnteredText.Request)
+    {
+        
+        let response = Child.GetEnteredText.Response(enteredText: self.enteredText)
+        presenter?.presentEnteredText(response: response)
+    }
 }

@@ -14,18 +14,18 @@ import UIKit
 
 protocol ParentPresentationLogic
 {
-  func presentSomething(response: Parent.Something.Response)
+    func presentChild(response: Parent.SetEnteredText.Response)
 }
 
 class ParentPresenter: ParentPresentationLogic
 {
-  weak var viewController: ParentDisplayLogic?
-  
-  // MARK: Do something
-  
-  func presentSomething(response: Parent.Something.Response)
-  {
-    let viewModel = Parent.Something.ViewModel()
-    viewController?.displaySomething(viewModel: viewModel)
-  }
+    weak var viewController: ParentDisplayLogic?
+    
+    // MARK: Do something
+    
+    func presentChild(response: Parent.SetEnteredText.Response)
+    {
+        let viewModel = Parent.SetEnteredText.ViewModel()
+        viewController?.displayChild(viewModel: viewModel)
+    }
 }
